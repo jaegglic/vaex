@@ -1,4 +1,5 @@
 astropy
+catboost
 cython
 fsspec <0.9
 geopandas
@@ -14,7 +15,7 @@ pandas
 pcre
 pip
 python-annoy
-# py-xgboost
+py-xgboost
 pyarrow
 pyqt
 pytest

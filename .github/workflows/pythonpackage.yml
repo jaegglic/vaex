@@ -55,13 +55,8 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         conda activate vaex-dev
-        mamba install -c conda-forge py-xgboost tensorflow
+        mamba install -c conda-forge tensorflow
         # xgboost is not available on windows on conda-forge
-    - name: Extra installs
-      if: matrix.python-version != '3.9' && matrix.python-version != '3.7'
-      run: |
-        conda activate vaex-dev
-        mamba install -y -q --file ci/conda-env-extra.yml
     - name: Extra windows installs
       if: matrix.os == 'windows-latest'
       run: |
