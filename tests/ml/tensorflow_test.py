@@ -8,6 +8,7 @@ import vaex.ml
 import vaex.ml.tensorflow
 
 
+@pytest.mark.slow
 def test_keras_model_classification(tmpdir, df_iris):
     df = df_iris
     copy = df.copy()
@@ -42,7 +43,7 @@ def test_keras_model_classification(tmpdir, df_iris):
 
     assert copy.pred.shape == (150, 3)
 
-
+@pytest.mark.slow
 def test_keras_model_regression(df_example):
     df = df_example
     df = df[:1_000]  # To make the tests run faster
