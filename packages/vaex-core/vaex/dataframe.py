@@ -461,7 +461,8 @@ class DataFrame(object):
     def _set(self, expression, progress=False, selection=None, flatten=True, delay=False, unique_limit=None):
         if selection is not None:
             selection = str(selection)
-        task = vaex.tasks.TaskSetCreate(self, str(expression), flatten, unique_limit=unique_limit, selection=selection)
+        expression = _ensure_string_from_expression(expression)
+        task = vaex.tasks.TaskSetCreate(self, expression, flatten, unique_limit=unique_limit, selection=selection)
         task = self.executor.schedule(task)
         return self._delay(delay, task)
 
@@ -6495,9 +6496,15 @@ class DataFrameLocal(DataFrame):
         :return:
         """
         from vaex.hdf5.writer import Writer
-        with Writer(path=path, group=group, mode=mode) as writer:
+        with Writer(path=path, group=group, mode=mode, byteorder=byteorder) as writer:
             writer.layout(self)
-            writer.write(self, chunk_size=chunk_size, progress=progress, column_count=column_count)
+            writer.write(
+                self,
+                chunk_size=chunk_size,
+                progress=progress,
+                column_count=column_count,
+                parallel=parallel,
+                export_threads=writer_threads)
 
     @docsubst
     def export_fits(self, path, progress=None):
