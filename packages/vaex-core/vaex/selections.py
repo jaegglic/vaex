@@ -82,7 +82,7 @@ class SelectionDropNa(Selection):
         if filter_mask is not None:
             mask = np.full(filter_mask.astype(np.uint8).sum(), True)
         else:
-            mask = np.ones(i2 - i1, dtype=np.bool)
+            mask = np.ones(i2 - i1, dtype=bool)
 
         for name in self.column_names:
             data = df._evaluate(name, i1, i2, filter_mask=filter_mask)
@@ -133,7 +133,7 @@ class SelectionExpression(Selection):
             N = i2 - i1
             current_mask = np.full(N, result)
         else:
-            current_mask = result #.astype(np.bool)
+            current_mask = result #.astype(bool)
         if previous_mask is None:
             logger.debug("setting mask")
             mask = current_mask
