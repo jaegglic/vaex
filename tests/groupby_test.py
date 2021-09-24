@@ -434,3 +434,13 @@ def test_groupby_state(df_factory, rebuild_dataframe):
 def test_old_years():
     df = vaex.from_arrays(t=[np.datetime64('1900-01-01'), np.datetime64('1945-01-01'), np.datetime64('2020-02-01')])
     assert df.groupby(df.t.astype('datetime64[Y]'), 'count')['count'].tolist() == [1, 1, 1]
+
+
+def test_binner(df_factory):
+    df = df_factory(x=[0.1, 1.1, 1.2, 2.2, 2.5, 2.7])
+    binner = vaex.groupby.Binner(df, df.x, 0, 3, bins=3)
+    dfg = df.groupby(binner, agg='count')
+    assert dfg.x.tolist() == [0.5, 1.5, 2.5]
+    assert dfg['count'].tolist() == [1, 2, 3]
+    xar = df.binby(binner, agg='count')
+    assert xar.data.tolist() == [1, 2, 3]

@@ -27,6 +27,19 @@ product = lambda l: reduce(operator.mul, l)
 class BinnerBase:
     pass
 
+class Binner(BinnerBase):
+    def __init__(self, df, expression, vmin, vmax, bins):
+        self.df = df
+        self.expression = self.df[str(expression)]
+        self.label = self.expression._label
+        self.vmin = vmin
+        self.vmax = vmax
+        self.N = bins
+        self.binby_expression = expression
+        self.binner = self.df._binner_scalar(expression, (self.vmin, self.vmax), bins)
+        self.bin_values = self.df.bin_centers(expression, (self.vmin, self.vmax), bins)
+        self.sort_indices = None
+
 class BinnerTime(BinnerBase):
     """Bins an expression in a specified datetime resolution.
 
